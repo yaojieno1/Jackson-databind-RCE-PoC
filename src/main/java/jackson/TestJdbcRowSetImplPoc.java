@@ -1,9 +1,7 @@
 package jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 
 /**
  * Created by liaoxinxi on 2017-12-11.

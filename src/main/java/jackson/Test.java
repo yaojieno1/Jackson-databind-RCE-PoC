@@ -30,7 +30,7 @@ public class Test extends AbstractTranslet {
     }
 
     public static void main(String[] args) throws Exception {
-        Test t = new Test();
+        
     }
 
 
