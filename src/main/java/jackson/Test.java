@@ -17,19 +17,21 @@ import java.io.IOException;
 
 public class Test extends AbstractTranslet {
     public Test() throws IOException {
-        Runtime.getRuntime().exec("calc");
+        Runtime.getRuntime().exec("open /Applications/Calculator.app");
     }
 
     @Override
     public void transform(DOM document, DTMAxisIterator iterator, SerializationHandler handler) {
     }
 
-    @Override
-    public void transform(DOM document, com.sun.org.apache.xml.internal.serializer.SerializationHandler[] handlers) throws TransletException {
+    //@Override
+    public void transform(DOM document, SerializationHandler[] handlers) throws TransletException {
 
     }
 
     public static void main(String[] args) throws Exception {
         Test t = new Test();
     }
+
+
 }
